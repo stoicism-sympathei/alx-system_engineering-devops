@@ -1,2 +1,2 @@
 #!/bin/bash
-grep -oE '^[/*/]$' /etc/passwd
+sort /etc/passwd | cut -d':' -f1,6
