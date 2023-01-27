@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-# This script is displaying "To infinity and beyond" indefinitely.
-# Cannot be terminated.
+# This script is stopping 4-to_infinity_and_beyond process.
 
-trap "echo I am invincible!!!" SIGTERM
-while true; do
-	echo "To infinity and beyond"
-	sleep 2
-done
+pkill -f "./4-to_infinity_and_beyond"
