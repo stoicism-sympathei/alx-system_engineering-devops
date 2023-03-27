@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Fix for the first web stack debugging_0 server 
+
+service apache2 start
