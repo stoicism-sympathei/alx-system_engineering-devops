@@ -8,6 +8,6 @@ sudo ufw allow 'Nginx HTTP'
 # Index page
 echo "Hello World!" | sudo tee /var/www/html/index
 
-# Redirect to fabulous Rick Astley page
+# Redirect to Freudian psychoanalysis page
 sudo sed -i '/listen 80 default_server/a rewrite ^/redirect_me https://www.youtube.com/watch?v=i0OoNNh9j2U&ab_channel=PHILO-notes/ permanent;' /etc/nginx/sites-available/default
 sudo service nginx restart
