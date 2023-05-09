@@ -1,53 +1,50 @@
 #!/usr/bin/python3
 """Contains the count_words function"""
-
 import requests
 
 
-def count_words(subreddit, word_list, after=None):
+def count_words(subreddit, word_list, found_dict={}, after=None):
     '''Prints counts of given words found in hot posts of a given subreddit.
     Args:
         subreddit (str): The subreddit to search.
         word_list (list): The list of words to search for in post titles.
+        found_dict (dict): Key/value pairs of words/counts.
         after (str): The parameter for the next page of the API results.
     '''
     user_agent = {'User-agent': 'test45'}
-    if after is None:
+    url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)
+    if after is not None:
+        url += '?after={}'.format(after)
+    posts = requests.get(url, headers=user_agent)
+
+    if posts.status_code == 404:
+        print('Subreddit not found')
+        return
+    elif posts.status_code != 200:
+        print('Error while fetching data from subreddit')
+        return
+
+    posts = posts.json()['data']
+    aft = posts['after']
+    posts = posts['children']
+
+    if not found_dict:
         word_list = [word.lower() for word in word_list]
-        found_list = []
+
+    for post in posts:
+        title = post['data']['title'].lower()
+        for word in title.split():
+            if word in word_list:
+                if word in found_dict:
+                    found_dict[word] += 1
+                else:
+                    found_dict[word] = 1
+
+    if aft is not None:
+        count_words(subreddit, word_list, found_dict, aft)
     else:
-        found_list = count_words(subreddit, word_list, after=after)
-
-    posts = requests.get('http://www.reddit.com/r/{}/hot.json?after={}'
-                         .format(subreddit, after), headers=user_agent)
-
-    if posts.status_code == 200:
-        posts = posts.json()['data']
-        aft = posts['after']
-        posts = posts['children']
-        for post in posts:
-            title = post['data']['title'].lower()
-            for word in title.split(' '):
-                if word.isalpha() and word.lower() in word_list:
-                    found_list.append(word.lower())
-        if aft is not None:
-            found_list += count_words(subreddit, word_list, aft)
-    return found_list
-
-
-def print_results(found_list):
-    '''Prints the counts of each word in the list, sorted by count and then alphabetically.'''
-    result = {}
-    for word in found_list:
-        if word in result.keys():
-            result[word] += 1
+        if not found_dict:
+            print('No results found for given keywords')
         else:
-            result[word] = 1
-    for key, value in sorted(result.items(), key=lambda item: (-item[1], item[0])):
-        print('{}: {}'.format(key, value))
-
-
-subreddit = 'learnpython'
-word_list = ['Python', 'javascript', 'Java', 'SQL', 'CSS']
-found_list = count_words(subreddit, word_list)
-print_results(found_list)
+            for key, value in sorted(found_dict.items(), key=lambda item: item[1], reverse=True):
+                print('{}: {}'.format(key, value))
