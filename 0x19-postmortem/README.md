@@ -21,11 +21,11 @@ Postmortem: Nginx Server Failure
 On May 13, 2023, at approximately 11:20 PM, the Nginx web server on our web stack debugging project failed to restart after a configuration change. The issue was caused by incorrect user permissions and was resolved by granting the necessary permissions to the user. A subsequent attempt to access the web page was successful.
 
 # Timeline
-11:00 PM: A configuration change was made to the Nginx web server to change the default port from 80 to 8080.
-11:20 PM: A restart of the Nginx web server was attempted, but failed with an "Interactive authentication required" error.
-11:22 PM: System logs were checked and revealed that the error was due to user permission issues.
-11:24 PM: The necessary user permissions were granted and the Nginx web server was successfully restarted.
-11:25 PM: An attempt to access the web page was successful.
+- 11:00 PM: A configuration change was made to the Nginx web server to change the default port from 80 to 8080.
+- 11:20 PM: A restart of the Nginx web server was attempted, but failed with an "Interactive authentication required" error.
+- 11:22 PM: System logs were checked and revealed that the error was due to user permission issues.
+- 11:24 PM: The necessary user permissions were granted and the Nginx web server was successfully restarted.
+- 11:25 PM: An attempt to access the web page was successful.
 # Root Cause
 The root cause of the Nginx web server failure was due to incorrect user permissions, specifically the user not having sufficient permissions to restart the server.
 
