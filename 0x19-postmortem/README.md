@@ -8,7 +8,7 @@ Further investigation revealed that the Nginx user did not exist on the system.
 The user created the Nginx user with the command sudo adduser nginx and then restarted the Nginx service with the command sudo systemctl restart nginx.service.
 Next Issue: After restarting the Nginx service, the user encountered the error message "Failed to restart nginx.service: Interactive authentication required. See system logs and 'systemctl status nginx.service' for details."
 
-#Troubleshooting Steps:
+# Troubleshooting Steps:
 
 The user checked the system logs by running the command sudo journalctl -xe and found that the error was due to user permission issues.
 The user updated the permissions for the Nginx user by running the command sudo chown -R nginx:nginx /var/www/html and then restarted the Nginx service with the command sudo systemctl restart nginx.service.
@@ -41,7 +41,7 @@ Regularly monitor the system logs to detect and address any issues that may aris
 Humor
 We know that postmortems can be a bit dry, so we've added a bit of humor to keep things interesting. Just remember, laughter is the best medicine (unless you have diarrhea, in which case, avoid it at all costs).
 
-Q: Why was the Nginx web server feeling lonely?
-A: Because it had no port to call home!
+- Q: Why was the Nginx web server feeling lonely?
+- A: Because it had no port to call home!
 
 I hope you found this postmortem informative and entertaining. Remember, don't take yourself too seriously, even in the face of technical difficulties. Happy debugging!
